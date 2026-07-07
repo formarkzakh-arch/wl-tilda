@@ -495,88 +495,51 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
 }
 
 /* =====================================================================
-   ШАПКА — АДАПТИВ ПО ШИРИНЕ (десктоп-меню в диапазоне 961–1359px)
-   Блок меню: #rec2328046723 (t-menu-base / t1272).
+   ШАПКА — десктоп-меню (блок #rec2328046723, Tilda t1272)
 
-   ПРОБЛЕМА: меню (левые пункты + лого по центру + правые пункты + 5 иконок)
-   для одной строки требует ~1345px, а родной бургер Tilda включается только
-   ≤960px. → в 961–1344px меню сваливалось на 2 строки («кутерьма»).
+   ПРОБЛЕМА: полное меню (5 пунктов + широкий центр-логотип + 3 соц-иконки +
+   поиск/корзина ≈ 1400+px) на частых десктоп-ширинах (1366/1440) сваливалось
+   на 2 строки — иконки уезжали «на второй уровень». Плюс в узкой полосе меню
+   обрезалось, а поиск/корзина схлопывались из-за flex-сжатия.
 
-   ФИКС: в 961–1359px оставляем ПОЛНЫЙ размер шрифта пунктов (не мельчим),
-   но освобождаем место — прячем 3 соц-иконки (telegram/phone/whatsapp; они
-   есть в контактах, в футере и в мобильном меню) и слегка ужимаем зазоры.
-   Поиск и корзина остаются. Тогда меню помещается в одну строку крупным
-   шрифтом. ≤960px — родной бургер Tilda (не тронут). ≥1360px — обычное меню.
-   Мобильное меню и его фон не затрагиваются (правила только min-width:961px).
+   ФИКС:
+   • на ВСЕХ десктоп-ширинах держим ОДНУ строку (flex-wrap:nowrap);
+   • соц-иконки (telegram/phone/whatsapp) в шапке скрываем — они есть в футере
+     и в мобильном меню, а в шапке делали её слишком широкой (это и была главная
+     причина переноса на 2-ю строку на 1366/1440);
+   • поиск/корзина не сжимаем (flex-shrink:0), иначе схлопывались до ~8px;
+   • на узких 961–1200 мягко ужимаем пункты/логотип, чтобы всё влезло;
+   • на просторных ≥1201 чуть увеличиваем лупу/корзину для заметности.
+   ≤960px — родной бургер Tilda (не трогаем).
 ===================================================================== */
-@media screen and (min-width: 961px) and (max-width: 1359px){
-  /* строка меню — не переносить, зазоры/поля чуть плотнее */
-  #rec2328046723 .t-menu-base__maincontainer{
-    flex-wrap: nowrap !important;
-    column-gap: 20px !important;
-    padding-left: 14px !important;
-    padding-right: 14px !important;
-  }
-  #rec2328046723 .t-menu-base__list{
-    flex-wrap: nowrap !important;
-    column-gap: 16px !important;
-  }
-  /* прячем только соц-иконки в шапке (поиск/корзина остаются) */
-  #rec2328046723 .t-menu-base__rightwrapper .t-sociallinks__item{
-    display: none !important;
-  }
-  /* ВАЖНО: из-за flex-wrap:nowrap выше flex ужимал контейнер виджет-иконок
-     (поиск/корзина) — у него нет flex-shrink:0, а иконка width:100% → на тесных
-     ширинах (1100–1359) иконки схлопывались до ~8px. Запрещаем им сжиматься и
-     фиксируем нормальный размер. */
+@media screen and (min-width: 961px){
+  #rec2328046723 .t-menu-base__maincontainer{ flex-wrap: nowrap !important; }
+  #rec2328046723 .t-menu-base__list{ flex-wrap: nowrap !important; }
+  /* соц-иконки в шапке скрыты на десктопе (дублируются в футере / мобильном меню) */
+  #rec2328046723 .t-menu-base__rightwrapper .t-sociallinks__item{ display: none !important; }
+  /* поиск/корзина не сжимаются в тесной строке (иначе схлопывались до ~8px) */
   #rec2328046723 .t-menu-base__rightwrapper,
   #rec2328046723 .t-menuwidgeticons__wrapper,
   #rec2328046723 .t-menuwidgeticons__icon,
-  #rec2328046723 .t-menuwidgeticons__link{
-    flex-shrink: 0 !important;
-  }
-  #rec2328046723 .t-menuwidgeticons__img{
-    flex-shrink: 0 !important;
-    width: 18px !important;
-    height: 18px !important;
-  }
+  #rec2328046723 .t-menuwidgeticons__link{ flex-shrink: 0 !important; }
 }
 
-/* --- Узкий десктоп 961–1200px: меню НЕ влезало даже без соц-иконок и уезжало
-   за край (пункты + широкий центр-логотип + поиск/корзина). Родной бургер Tilda
-   включается только ≤960 и его вертикальную раскладку выше порога поднять нельзя
-   (вся мобильная вёрстка жёстко гейтится @media ≤960). Поэтому в этой полосе
-   мягко ужимаем: пункты 12→11px, зазоры плотнее, логотип 28→18px — меню в одну
-   строку без обрезки И с нормальными (не схлопнутыми) иконками. На 1201px+
-   влезает полный размер (проверено), поэтому диапазон заканчивается на 1200. */
+/* Узкий десктоп 961–1200px: мягко ужимаем, чтобы меню влезло в одну строку. */
 @media screen and (min-width: 961px) and (max-width: 1200px){
   #rec2328046723 .t-menu-base__maincontainer{
-    column-gap: 6px !important;
-    padding-left: 8px !important;
-    padding-right: 8px !important;
+    column-gap: 6px !important; padding-left: 8px !important; padding-right: 8px !important;
   }
-  #rec2328046723 .t-menu-base__list{
-    column-gap: 6px !important;
-  }
-  #rec2328046723 .t-menu__link-item{
-    font-size: 11px !important;
-    letter-spacing: 0 !important;
-  }
-  #rec2328046723 .t-menu-base__textlogo{
-    font-size: 18px !important;
-  }
+  #rec2328046723 .t-menu-base__list{ column-gap: 6px !important; }
+  #rec2328046723 .t-menu__link-item{ font-size: 11px !important; letter-spacing: 0 !important; }
+  #rec2328046723 .t-menu-base__textlogo{ font-size: 18px !important; }
+  #rec2328046723 .t-menuwidgeticons__img{ width: 18px !important; height: 18px !important; }
 }
 
-/* --- Виджет-иконки (поиск/корзина) у Tilda мельче соседних соц-иконок
-   (≈19px против ≈25px) → на десктопе смотрятся «маленькими». Ширину контейнера
-   Tilda держит жёстко (даже ID+!important не берёт), поэтому увеличиваем ВИЗУАЛЬНО
-   через transform (layout не трогает, обрезки/сдвигов не даёт) до размера
-   соц-иконок. Только десктоп ≥1360, где соц-иконки видны и есть место. */
-@media screen and (min-width: 1360px){
-  #rec2328046723 .t-menuwidgeticons__img{
-    transform: scale(1.3);
-    transform-origin: center;
-  }
+/* Просторный десктоп ≥1201px: лупа/корзина крупнее для заметности.
+   Ширину контейнера Tilda держит жёстко, поэтому увеличиваем ВИЗУАЛЬНО через
+   transform (layout не трогает — ни обрезки, ни сдвигов). */
+@media screen and (min-width: 1201px){
+  #rec2328046723 .t-menuwidgeticons__img{ transform: scale(1.25); transform-origin: center; }
 }
 
 
