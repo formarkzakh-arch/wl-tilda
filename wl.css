@@ -1,0 +1,592 @@
+/* =====================================================================
+   ДИЗАЙН-ТОКЕНЫ WL  (единственное, что правим при смене дизайна)
+===================================================================== */
+:root{
+  --wl-black:    #000000;
+  --wl-ink:      #25242d;
+  --wl-slate:    #3a3850;
+  --wl-muted:    #5e5d73;
+  --wl-gray:     #818181;
+  --wl-gray-2:   #a3a3a3;
+  --wl-gray-3:   #b0b0b0;
+  --wl-gray-4:   #c8c8c8;
+  --wl-line:     #787878;
+  --wl-bg:       #ffffff;
+  --wl-img-bg:   #ffffff;
+  --wl-font:     'Onest', sans-serif;
+  --wl-tracking: .04em;
+  --wl-radius:   0px;
+  --wl-btn-h:    42px;
+  --wl-border:   1px solid var(--wl-line);
+}
+
+@media (min-width: 641px){
+  .t-store__prod-popup__slider .t-slds__bgimg{
+    background-size: contain !important; background-repeat: no-repeat !important;
+    background-position: center center !important;
+  }
+}
+/* Фон галереи товара — белый на всех ширинах (перебивает инлайн #ebebeb Tilda,
+   на мобилке правило раньше было закрыто медиазапросом 641px → оставался серый) */
+.t-store__prod-popup__slider .t-slds__container{ background-color: #ffffff !important; }
+
+
+/* =====================================================================
+   КАРТОЧКА ТОВАРА — ПОПАП Tilda (на случай, если где-то останется попап)
+===================================================================== */
+.t-store__prod-popup__container{ border-radius: var(--wl-radius); font-family: var(--wl-font); }
+.t-store__prod-popup__slider-main,
+.t-store__prod-popup__slider-thumbs .t-slds__thumbsbullet{ background: var(--wl-img-bg); }
+.t-store__prod-popup__name{
+  font-family: var(--wl-font); font-weight: 500; text-transform: uppercase;
+  letter-spacing: var(--wl-tracking); color: var(--wl-black);
+}
+.t-store__prod-popup__price-wrapper,
+.t-store__prod-popup__price{ font-family: var(--wl-font); font-weight: 300; color: var(--wl-black); }
+/* старая цена — серая, зачёркнута, мельче новой (в макете обе мелкие 12px) */
+.t-store__prod-popup__price_old,
+.t-store__prod-popup__price_old .t-store__prod-popup__price-currency,
+.js-store-prod-price-old,
+.js-store-prod-price-old-val{
+  color: var(--wl-gray-3) !important; text-decoration: line-through !important;
+  font-weight: 300 !important; font-size: .9em !important;
+}
+.t-store__prod-popup__text,
+.t-store__prod-popup__option-title,
+.js-store-prod-sku-wrap{
+  font-family: var(--wl-font); text-transform: uppercase;
+  letter-spacing: var(--wl-tracking); color: var(--wl-gray); font-weight: 300;
+}
+.t-store__prod-popup__option-title{ color: var(--wl-black); font-weight: 500; }
+/* описание под ценой — чёрное (в макете #000, не серое) */
+.js-store-prod-all-text{ color: var(--wl-black) !important; font-weight: 300; }
+/* слот, куда JS переносит описание сразу под цену */
+.wl-descr-slot{ margin: 6px 0 2px; }
+.wl-descr-slot:empty{ display: none; }
+.t-product__option-variant,
+.t-store__card__option{ border-radius: var(--wl-radius); }
+.t-product__option-variant.t-store__card__option-active,
+.t-product__option-variant:hover{ border-color: var(--wl-black); }
+.t-store__prod-popup__option-select,
+.t-store .t-select__wrapper select{
+  border-radius: var(--wl-radius); border: var(--wl-border);
+  text-transform: uppercase; letter-spacing: var(--wl-tracking);
+}
+
+/* ----- ВАРИАНТЫ-ПЛАШКИ: ЦВЕТ и РАЗМЕР (как в макете) ----- */
+.t-product__option-variant,
+.t-store__card__option{
+  border-radius: var(--wl-radius) !important;
+  border: 1px solid var(--wl-line) !important;
+  min-width: 44px; min-height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--wl-font) !important; font-size: 12px;
+  letter-spacing: var(--wl-tracking); text-transform: uppercase; color: var(--wl-black);
+  background-clip: padding-box; box-sizing: border-box;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.t-product__option-variant:hover{ border-color: var(--wl-black) !important; }
+/* выбранный вариант — чёткая чёрная рамка */
+.t-product__option-variant.t-store__card__option-active,
+.t-store__card__option-active,
+.t-product__option-variant_active{
+  border-color: var(--wl-black) !important;
+  box-shadow: inset 0 0 0 1px var(--wl-black);
+}
+/* недоступный размер — приглушаем и зачёркиваем */
+.t-product__option-variant_disabled,
+.t-store__card__option_disabled,
+.t-product__option-variant.t-store__card__option-disabled{
+  opacity: .35 !important; text-decoration: line-through; pointer-events: none;
+}
+
+/* =====================================================================
+   STICKY-КНОПКА "В КОРЗИНУ" на мобайле (как в макете). Прокси к штатной кнопке.
+===================================================================== */
+.wl-sticky-add{
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 9600;
+  display: none;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--wl-bg); border-top: 1px solid var(--wl-line);
+}
+.wl-sticky-add__btn{
+  width: 100%; min-height: 48px; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 0 18px; cursor: pointer;
+  background: transparent; color: var(--wl-black); border: var(--wl-border);
+  font-family: var(--wl-font); font-size: 12px; font-weight: 400;
+  text-transform: uppercase; letter-spacing: var(--wl-tracking);
+}
+.wl-sticky-add__btn:active{ background: var(--wl-black); color: #fff; }
+.wl-sticky-add__price{ font-weight: 300; white-space: nowrap; }
+@media (max-width: 640px){
+  .wl-sticky-add.is-ready{ display: block; }
+  body.wl-has-sticky{ padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+}
+/* Пока открыто нативное меню Tilda — убираем свои fixed-оверлеи с дороги:
+   sticky-бар, hero-оверлей и невидимую прокси-кнопку (z:9601), иначе они
+   перекрывают меню / перехватывают тапы, и меню «пропадает». */
+body.wl-menu-open .wl-sticky-add,
+body.wl-menu-open .wl-hero-overlay,
+body.wl-menu-open.wl-mobile-prod .t-store__prod-popup__btn-wrapper{
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+/* Кнопка "КУПИТЬ / В корзину". У Tilda инлайн color:#fff (перебивается нашим !important)
+   и background:#000 в её CSS с !important, который грузится ПОЗЖЕ нашего HEAD-стиля →
+   чтобы выиграть фон, поднимаем специфичность парой классов (.btn.t-btn). Текст лежит
+   в , его тоже красим. js-хуки НЕ трогаем. */
+.t-store__prod-popup__btn-wrapper .t-store__prod-popup__btn,
+.t-store__prod-popup__btn.t-btn,
+a.t-store__prod-popup__btn,
+.t-store__prod-popup__btn,
+.t-store__prod-popup__btn-wrapper .t-submit,
+.js-store-prod-popup-add-btn{
+  background: transparent !important; background-color: transparent !important;
+  background-image: none !important; color: var(--wl-black) !important;
+  border: var(--wl-border) !important; border-radius: var(--wl-radius) !important;
+  min-height: var(--wl-btn-h); text-transform: uppercase; letter-spacing: var(--wl-tracking);
+  font-family: var(--wl-font); font-weight: 400; box-shadow: none !important;
+  transition: background .2s ease, color .2s ease;
+}
+/* текст кнопки внутри таблицы/td */
+.t-store__prod-popup__btn .js-store-prod-popup-buy-btn-txt,
+.t-store__prod-popup__btn td,
+.t-store__prod-popup__btn span{ color: var(--wl-black) !important; }
+/* hover — заливка чёрным, текст белым (в т.ч. td) */
+.t-store__prod-popup__btn.t-btn:hover,
+.t-store__prod-popup__btn-wrapper .t-store__prod-popup__btn:hover,
+.t-store__prod-popup__btn:hover,
+.js-store-prod-popup-add-btn:hover{ background: #9998A6 !important; background-color: #9998A6 !important; color: #fff !important; }
+.t-store__prod-popup__btn:hover .js-store-prod-popup-buy-btn-txt,
+.t-store__prod-popup__btn:hover td,
+.t-store__prod-popup__btn:hover span{ color: #fff !important; }
+.t-store__prod-popup__btn:active{ transform: scale(.99); }
+/* disabled (размер не выбран) — приглушённый аутлайн, не чёрный блок */
+.t-store__prod-popup__btn-wrapper .t-submit[disabled],
+.t-store__prod-popup__btn_disabled,
+.t-store__prod-popup__btn.t-store__prod-popup__btn_disabled,
+.t-btn_disabled{ opacity:.45; cursor:not-allowed; }
+
+/* ----- АРТИКУЛ / БРЕНД ----- */
+.t-store__prod-popup__sku,
+.t-store__prod-popup__brand{
+  font-family: var(--wl-font); font-weight: 300; font-size: 11px;
+  letter-spacing: var(--wl-tracking); text-transform: uppercase; color: var(--wl-muted);
+}
+
+/* ----- ГАЛЕРЕЯ: серый фон, стрелки, активная миниатюра ----- */
+.t-store__prod-popup__slider .t-slds__arrow-wrapper,
+.t-store__prod-popup__slider .t-slds__arrow{ background: transparent; color: var(--wl-black); }
+.t-store__prod-popup__slider-thumbs .t-slds__thumbsbullet_active{ border:1px solid var(--wl-black); }
+
+/* ----- ДЕСКТОП: мини-галерея строго по центру главного фото ----- */
+@media (min-width: 641px){
+  .t-store__prod-popup__slider .t-slds__thumbsbullet-wrapper{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+
+    width: max-content !important;
+    max-width: 100% !important;
+
+    position: relative !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    float: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .t-store__prod-popup__slider
+  .t-slds__thumbsbullet-wrapper
+  > .t-slds__thumbsbullet{
+    display: block !important;
+    flex: 0 0 auto !important;
+    float: none !important;
+  }
+}
+
+/* ----- БЛОК "СМОТРИТЕ ТАКЖЕ" ----- */
+/* заголовок — мелкий, слева (перебиваем крупный t-uptitle_xxl) */
+.t-store__relevants__title,
+.t-store__relevants__title.t-uptitle,
+.t-store__relevants__title.t-uptitle_xxl{
+  font-family: var(--wl-font) !important; font-weight: 300 !important;
+  font-size: 14px !important; line-height: 1.3 !important;
+  letter-spacing: var(--wl-tracking) !important; text-transform: uppercase !important;
+  color: var(--wl-black) !important; text-align: left !important;
+}
+/* карточки рекомендаций — как в каталоге: название + цена, без описания/артикула */
+.t-store__relevants__container .t-store__card__title,
+.t-store__relevants__container .t-store__card__price,
+.t-store__relevants__container .t-store__card__price-item{
+  font-family: var(--wl-font) !important; font-weight: 300 !important;
+  letter-spacing: var(--wl-tracking); text-transform: uppercase; color: var(--wl-black);
+}
+.t-store__relevants__container .t-store__card__descr,
+.t-store__relevants__container [class*="card__article"],
+.t-store__relevants__container [class*="card__sku"],
+.t-store__relevants__container .t-store__card__descr-wrapper{ display:none !important; }
+.t-store__relevants__container .t-store__card__price_old{ color: var(--wl-gray-3); text-decoration: line-through; }
+/* название слева / цена справа (как в каталоге) */
+.t-store__relevants__container .wl-cap-row{
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-top:14px;
+}
+.t-store__relevants__container .wl-cap-row .t-store__card__title{ flex:1 1 auto; margin:0 !important; }
+.t-store__relevants__container .wl-cap-row .t-store__card__price-wrapper,
+.t-store__relevants__container .wl-cap-row .t-store__card__price{ flex:none; margin:0 !important; white-space:nowrap; }
+/* размеры — мелкой строкой, как в каталоге */
+.t-store__relevants__container .wl-card-sizes{ margin-top:6px; display:flex; flex-wrap:wrap; align-items:center; }
+.t-store__relevants__container .wl-card-sizes .t-product__option-item{
+  border:none !important; box-shadow:none !important; background:transparent !important;
+  min-width:auto !important; min-height:auto !important; width:auto !important; height:auto !important;
+  padding:0 6px 0 0 !important; margin:0 4px 0 0 !important;
+}
+.t-store__relevants__container .wl-card-sizes .t-product__option-checkmark,
+.t-store__relevants__container .wl-card-sizes .t-product__option-input{ display:none !important; }
+.t-store__relevants__container .wl-card-sizes .t-product__option-item .t-product__option-title{
+  display:inline !important; font-size:11px !important; color:var(--wl-muted) !important;
+  text-transform:uppercase !important; letter-spacing:.06em; border:none !important;
+}
+
+/* =====================================================================
+   КОРЗИНА (T706)
+===================================================================== */
+.t706 .t-store__btn,
+.t706 .t-submit,
+.t706__cartwin-prodamount-btn{
+  font-family: var(--wl-font); text-transform: uppercase;
+  letter-spacing: var(--wl-tracking); border-radius: var(--wl-radius);
+}
+.t706 .t-store__btn,
+.t706 .t-form__submit .t-submit{
+  background: var(--wl-black); border: var(--wl-border);
+  border-color: var(--wl-black); color:#fff;
+}
+.t706 .t-store__btn:hover{ background: var(--wl-ink); }
+.t706__cartwin-content{ border-radius: var(--wl-radius); font-family: var(--wl-font); }
+.t706__product-title{ text-transform: uppercase; letter-spacing: var(--wl-tracking); }
+.t706__carticon-counter{ background: var(--wl-black); border-radius: 50%; }
+
+/* =====================================================================
+   АККОРДЕОНЫ из характеристик товара (ДЕТАЛИ / ДОСТАВКА / СОСТАВ)
+   Разметку строит JS ниже из .js-store-prod-charcs. Классы кастомные — безопасно.
+===================================================================== */
+.wl-acc{ margin-top:28px; max-width:520px; } /* без полосок-линий — как в макете */
+.wl-acc__head{
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  padding:16px 0; cursor:pointer;
+  font-family:var(--wl-font); font-size:12px; font-weight:400;
+  letter-spacing:var(--wl-tracking); text-transform:uppercase; color:var(--wl-black);
+}
+.wl-acc__sign{ font-size:18px; line-height:1; transition:transform .25s ease; flex:none; }
+.wl-acc__item.is-open .wl-acc__sign{ transform:rotate(45deg); } /* + → × */
+.wl-acc__body{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+.wl-acc__body-inner{
+  padding-bottom:16px;
+  font-family:var(--wl-font); font-size:12px; font-weight:300; line-height:1.7;
+  letter-spacing:var(--wl-tracking); text-transform:uppercase; color:var(--wl-gray);
+}
+.wl-acc__item.is-open .wl-acc__body{ max-height:800px; }
+
+/* =====================================================================
+   МОБИЛЬНАЯ КАРТОЧКА ТОВАРА — 2 экрана (Figma 166-537 / 184-751).
+   ВКЛЮЧАЕТСЯ классом body.wl-mobile-prod (его ставит JS ТОЛЬКО на /tproduct
+   и ТОЛЬКО при ширине ≤640px) → десктоп-карточка и каталог не затрагиваются.
+   Базово все кастомные блоки скрыты — проявляются лишь под этим классом.
+===================================================================== */
+.wl-mgal, .wl-hero-overlay{ display:none; }            /* по умолчанию (десктоп) — скрыто */
+
+@media (max-width: 640px){
+  /* нет горизонтального скролла от full-bleed слайдера */
+  body.wl-mobile-prod{ overflow-x: hidden; }
+
+  /* --- ЭКРАН 1: фото почти на весь экран (вертикальная скролл-стопка) --- */
+  body.wl-mobile-prod .t-store__prod-popup__slider{
+    position: relative;
+    width: 100vw; margin-left: 50%; transform: translateX(-50%);  /* full-bleed под любой паддинг контейнера */
+    height: calc(100svh - 56px);                 /* 56px = высота шапки; ПРАВИТЬ ТУТ под реальную шапку */
+    max-height: calc(100vh - 56px);              /* фолбэк для браузеров без svh */
+    background: var(--wl-img-bg); overflow: hidden;
+    margin-bottom: 0;                            /* инфо-колонка уехала в панель экрана 2 → под слайдером пусто */
+  }
+  /* нативный слайдер Tilda на мобайле прячем — стопку фото строим своим JS */
+  body.wl-mobile-prod .t-store__prod-popup__slider > .js-product-img,
+  body.wl-mobile-prod .t-store__prod-popup__slider .t-slds,
+  body.wl-mobile-prod .t-store__prod-popup__slider-main,
+  body.wl-mobile-prod .t-store__prod-popup__slider-thumbs{ display: none !important; }
+
+  /* стопка фото со снапом */
+  body.wl-mobile-prod .wl-mgal{
+    display: block; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    scroll-snap-type: y mandatory; scrollbar-width: none;
+  }
+  body.wl-mobile-prod .wl-mgal::-webkit-scrollbar{ display: none; }
+  body.wl-mobile-prod .wl-mgal__slide{
+    height: 100%; width: 100%; scroll-snap-align: start;
+    background-color: var(--wl-img-bg);
+    background-size: contain; background-repeat: no-repeat; background-position: center 20%;
+  }
+  /* индикатор-точки слева (⋮ из макета) */
+  body.wl-mobile-prod .wl-mgal__dots{
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 7px; z-index: 5; pointer-events: none;
+  }
+  body.wl-mobile-prod .wl-mgal__dot{
+    width: 5px; height: 5px; border-radius: 50%; background: var(--wl-gray-3); transition: background .2s ease;
+  }
+  body.wl-mobile-prod .wl-mgal__dot.is-active{ background: var(--wl-black); }
+
+  /* слайдер обязан быть position:relative — иначе оверлей «вываливается» под фото */
+  body.wl-mobile-prod .t-store__prod-popup__slider{ position: relative !important; }
+
+  /* оверлей фиксированно над sticky-баром (position:fixed обходит баг Safari с transform) */
+  body.wl-mobile-prod .wl-hero-overlay{
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    position: fixed;
+    left: 0; right: 0;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px) + 12px);
+    z-index: 9599; /* ниже sticky-бара (9600) */
+    padding: 0 16px; pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  body.wl-mobile-prod .wl-hero-overlay.wl-ov-hidden{ opacity: 0; }
+  body.wl-mobile-prod .wl-hero-overlay__name{
+    flex: 1 1 auto; font-family: var(--wl-font); font-size: 13px; font-weight: 400;
+    letter-spacing: var(--wl-tracking); text-transform: uppercase; color: var(--wl-black);
+  }
+  body.wl-mobile-prod .wl-hero-overlay__color{
+    flex: none; pointer-events: auto; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 11px 4px 6px; border-radius: 40px; background: rgba(255,255,255,.72);
+    font-family: var(--wl-font); font-size: 11px; color: var(--wl-muted);
+    text-transform: uppercase; letter-spacing: var(--wl-tracking);
+  }
+  body.wl-mobile-prod .wl-hero-overlay__swatch{
+    width: 20px; height: 20px; border-radius: 50%; flex: none;
+    border: 1px solid var(--wl-line);
+    background: var(--wl-slate) center/cover no-repeat;
+  }
+
+  /* --- ЭКРАН 2: инфо-колонка --- */
+  /* название скрыто — оно уже показывается оверлеем поверх фото */
+  body.wl-mobile-prod .t-store__prod-popup__name{ display: none !important; }
+  /* цену на экране 2 не дублируем — она в sticky-баре и в шторке (как в макете).
+     Узел остаётся в DOM (скрыт) → синхронизация цены в баре/шторке продолжает работать. */
+  body.wl-mobile-prod .js-store-price-wrapper{ display: none; }
+  body.wl-mobile-prod .wl-acc{ max-width: none; margin-top: 22px; } /* на десктопе было 520px */
+  /* реальную кнопку КУПИТЬ на экране 2 прячем (её роль у sticky-бара и шторки),
+     но оставляем кликабельной для прокси → visually-hidden, НЕ display:none */
+  /* Реальная кнопка Tilda — невидимо float поверх sticky-бара (z:9601 > z:9600).
+     Пользователь нажимает сюда → isTrusted=true → Tilda обрабатывает.
+     Disabled → pointer-events:none → клик достигает sticky-бара → скролл к опциям. */
+  body.wl-mobile-prod .t-store__prod-popup__btn-wrapper{
+    position: fixed !important;
+    left: 0; right: 0;
+    bottom: env(safe-area-inset-bottom, 0px);
+    height: 76px; z-index: 9601;
+    opacity: 0 !important;
+    pointer-events: auto; /* syncBtnState() переключает в none при disabled */
+  }
+  body.wl-mobile-prod .t-store__prod-popup__btn-wrapper .t-store__prod-popup__btn,
+  body.wl-mobile-prod .t-store__prod-popup__btn-wrapper .js-store-prod-popup-add-btn{
+    position: absolute !important;
+    top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+    width: auto !important; height: auto !important;
+    min-height: 0 !important; cursor: pointer !important; pointer-events: auto !important;
+  }
+  /* образцы цвета — круглые, как в макете */
+  body.wl-mobile-prod .wl-color-group .t-product__option-variant{ border-radius: 50% !important; }
+
+  /* sticky-бар чуть выше под макет (правило показа .is-ready — выше) */
+  .wl-sticky-add__btn{ min-height: 52px; font-size: 13px; }
+}
+
+
+
+/* =====================================================================
+   ♡ ИЗБРАННОЕ — кнопка на галерее экрана 1 и на карточках рекомендаций
+===================================================================== */
+body.wl-mobile-prod .wl-wishlist-btn{
+  position:absolute; top:14px; right:14px; z-index:7;
+  width:36px; height:36px; border-radius:50%;
+  background:rgba(255,255,255,.72); border:none; padding:0;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+body.wl-mobile-prod .wl-wishlist-btn{ color: var(--wl-black); }
+body.wl-mobile-prod .wl-wishlist-btn svg{ width:18px; height:18px; display:block; }
+body.wl-mobile-prod .wl-wishlist-btn svg path{ fill:none; stroke:currentColor; }
+body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#cc0000; }
+
+
+
+/* =====================================================================
+   ПОДОБРАТЬ РАЗМЕР — ссылка под блоком вариантов (показ через JS)
+===================================================================== */
+.wl-size-guide{
+  display:flex; align-items:center; justify-content:flex-end; gap:6px;
+  margin:8px 0 4px; text-decoration:none;
+  font-family:var(--wl-font); font-size:11px; font-weight:300;
+  letter-spacing:var(--wl-tracking); text-transform:uppercase; color:var(--wl-muted) !important;
+}
+.wl-size-guide svg{ width:14px; height:14px; flex:none; color:var(--wl-muted); }
+
+/* =====================================================================
+   ♡ НА КАРТОЧКАХ "МОЖЕТ ВАМ ПОНРАВИТЬСЯ"
+===================================================================== */
+.t-store__relevants__container .t-store__card__img-wrapper{ position:relative; }
+.wl-card-heart{
+  position:absolute; top:8px; right:8px; z-index:2;
+  width:32px; height:32px; border-radius:50%;
+  background:rgba(255,255,255,.72); border:none; padding:0;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.wl-card-heart{ color: var(--wl-black); }
+.wl-card-heart svg{ width:15px; height:15px; display:block; }
+.wl-card-heart svg path{ fill:none; stroke:currentColor; }
+.wl-card-heart.is-active svg path{ fill:#cc0000; stroke:#cc0000; }
+
+
+/* =====================================================================
+   КНОПКА «КУПИТЬ» — ФИКСИРОВАННАЯ ШИРИНА НА ДЕСКТОПЕ
+   Мобильную карточку не затрагивает.
+===================================================================== */
+@media (min-width: 641px){
+  .t-store__prod-popup__info .t-store__prod-popup__btn-wrapper{
+    width: 515px !important;
+    max-width: 100% !important;
+    margin-top: 30px !important;
+    box-sizing: border-box !important;
+  }
+
+  .t-store__prod-popup__info .t-store__prod-popup__btn-wrapper .t-store__prod-popup__btn,
+  .t-store__prod-popup__info .t-store__prod-popup__btn-wrapper .js-store-prod-popup-add-btn,
+  .t-store__prod-popup__info .t-store__prod-popup__btn-wrapper .t-submit,
+  .t-store__prod-popup__info .t-store__prod-popup__btn.t-btn,
+  .t-store__prod-popup__info a.t-store__prod-popup__btn{
+    display: flex !important;
+    width: 515px !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* =====================================================================
+   ШАПКА МОБАЙЛ — иконки поиск/корзина уходят вправо
+   (бургер слева, лого по центру, иконки справа)
+===================================================================== */
+@media screen and (max-width: 980px){
+  .tmenu-mobile__container .t-menuwidgeticons__wrapper{
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* =====================================================================
+   ШАПКА — АДАПТИВ ПО ШИРИНЕ (десктоп-меню в диапазоне 961–1359px)
+   Блок меню: #rec2328046723 (t-menu-base / t1272).
+
+   ПРОБЛЕМА: меню (левые пункты + лого по центру + правые пункты + 5 иконок)
+   для одной строки требует ~1345px, а родной бургер Tilda включается только
+   ≤960px. → в 961–1344px меню сваливалось на 2 строки («кутерьма»).
+
+   ФИКС: в 961–1359px оставляем ПОЛНЫЙ размер шрифта пунктов (не мельчим),
+   но освобождаем место — прячем 3 соц-иконки (telegram/phone/whatsapp; они
+   есть в контактах, в футере и в мобильном меню) и слегка ужимаем зазоры.
+   Поиск и корзина остаются. Тогда меню помещается в одну строку крупным
+   шрифтом. ≤960px — родной бургер Tilda (не тронут). ≥1360px — обычное меню.
+   Мобильное меню и его фон не затрагиваются (правила только min-width:961px).
+===================================================================== */
+@media screen and (min-width: 961px) and (max-width: 1359px){
+  /* строка меню — не переносить, зазоры/поля чуть плотнее */
+  #rec2328046723 .t-menu-base__maincontainer{
+    flex-wrap: nowrap !important;
+    column-gap: 20px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+  #rec2328046723 .t-menu-base__list{
+    flex-wrap: nowrap !important;
+    column-gap: 16px !important;
+  }
+  /* прячем только соц-иконки в шапке (поиск/корзина остаются) */
+  #rec2328046723 .t-menu-base__rightwrapper .t-sociallinks__item{
+    display: none !important;
+  }
+}
+
+/* --- Узкий десктоп 961–1100px: меню НЕ влезало даже без соц-иконок и уезжало
+   за край (пункты + широкий центр-логотип + поиск/корзина ≈ 1081px). Родной
+   бургер Tilda включается только ≤960 и его вертикальную раскладку выше порога
+   поднять нельзя (вся мобильная вёрстка жёстко гейтится @media ≤960). Поэтому
+   в этой узкой полосе мягко ужимаем: пункты 12→11px, зазоры плотнее, логотип
+   28→22px — меню помещается в одну строку без обрезки. На 1101px+ уже влезает
+   полный размер (проверено), поэтому диапазон заканчивается на 1100. */
+@media screen and (min-width: 961px) and (max-width: 1100px){
+  #rec2328046723 .t-menu-base__maincontainer{
+    column-gap: 10px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  #rec2328046723 .t-menu-base__list{
+    column-gap: 8px !important;
+  }
+  #rec2328046723 .t-menu__link-item{
+    font-size: 11px !important;
+    letter-spacing: 0 !important;
+  }
+  #rec2328046723 .t-menu-base__textlogo{
+    font-size: 22px !important;
+  }
+}
+
+
+/* =====================================================================
+   ЖУРНАЛ (лента статей) — портретные обложки, без «рваной» обрезки.
+   Затрагивает ТОЛЬКО два блока: #rec2434267731 (блок «Журнал» на главной)
+   и #rec2375276713 (страница журнала). Больше нигде не применяется.
+
+   Причина обрезки в Tilda-ленте (t-feed):
+     .t-feed__post-imgwrapper → padding-bottom:66%   — ландшафтная пропорция плитки
+     .t-feed__post-bgimg      → background-size:cover — фон заливает плитку и режет лишнее
+   Решение (Вариант B): делаем плитку портретной 4:5 (125%). Вертикальные фото
+   садятся целиком, обрезка становится единой и «редакторской», а не случайной.
+   cover НЕ трогаем — пустых полей по краям не появляется.
+
+   Тюнинг высоты плитки: 100% = квадрат, 125% = 4:5 (мягкий портрет), 133% = 3:4 (выше).
+   ===================================================================== */
+#rec2434267731 .t-feed__post-imgwrapper,
+#rec2375276713 .t-feed__post-imgwrapper{
+  padding-bottom: 125% !important;   /* 4:5 портрет */
+}
+/* мобильный «стековый» фолбэк ленты: там пропорцию держит сам bgimg */
+@media screen and (max-width: 640px){
+  #rec2434267731 .t-feed__post-bgimg,
+  #rec2375276713 .t-feed__post-bgimg{
+    padding-bottom: 125% !important;
+    height: auto !important;
+  }
+}
+
+/* --- АЛЬТЕРНАТИВА (Вариант A): показать фото ЦЕЛИКОМ, совсем без обрезки. ---
+   Раскомментировать этот блок И убрать padding-bottom выше, если важно видеть
+   каждое фото полностью. Минус: у фото разной ориентации по краям остаются
+   пустые поля, карточки смотрятся менее ровно.
+#rec2434267731 .t-feed__post-bgimg,
+#rec2375276713 .t-feed__post-bgimg{
+  background-size: contain !important;
+  background-color: #f4f4f4 !important;
+}
+*/
