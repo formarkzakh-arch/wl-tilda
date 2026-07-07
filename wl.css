@@ -514,6 +514,15 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
   #rec2328046723 .t-menuwidgeticons__icon,
   #rec2328046723 .t-menuwidgeticons__link,
   #rec2328046723 .t-sociallinks__item{ flex-shrink: 0 !important; }
+  /* Мессенджеры и корзина — ОДНОГО размера (22px) и по одной линии (align center).
+     У соц-иконок размер задаётся шириной svg; у корзины контейнер Tilda зажат,
+     поэтому её растим transform'ом (18→~22, layout не трогает). */
+  #rec2328046723 .t-sociallinks__svg{ width: 22px !important; height: 22px !important; }
+  #rec2328046723 .t-menuwidgeticons__img{
+    width: 18px !important; height: 18px !important;
+    transform: scale(1.22); transform-origin: center;
+  }
+  #rec2328046723 .t-menu-base__rightwrapper{ align-items: center !important; }
 }
 
 /* Узкие 961–1099px: мессенджеры не помещаются рядом с полным меню — прячем. */
@@ -521,9 +530,9 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
   #rec2328046723 .t-menu-base__rightwrapper .t-sociallinks__item{ display: none !important; }
 }
 
-/* Ужатие меню 961–1459px: чтобы всё (пункты + логотип + мессенджеры + поиск/
-   корзина) влезло в одну строку без обрезки. Логотип 28→18, пункты 12→11,
-   мессенджеры мельче (16px). ≥1460 — штатный размер. */
+/* Ужатие меню 961–1459px: чтобы всё (пункты + логотип + мессенджеры + корзина)
+   влезло в одну строку без обрезки. Логотип 28→18, пункты 12→11. ≥1460 — штатный
+   размер меню. Размер иконок задаётся выше (единый, 22px). */
 @media screen and (min-width: 961px) and (max-width: 1459px){
   #rec2328046723 .t-menu-base__maincontainer{
     column-gap: 6px !important; padding-left: 8px !important; padding-right: 8px !important;
@@ -531,15 +540,6 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
   #rec2328046723 .t-menu-base__list{ column-gap: 6px !important; }
   #rec2328046723 .t-menu__link-item{ font-size: 11px !important; letter-spacing: 0 !important; }
   #rec2328046723 .t-menu-base__textlogo{ font-size: 18px !important; }
-  #rec2328046723 .t-menuwidgeticons__img{ width: 18px !important; height: 18px !important; }
-  #rec2328046723 .t-sociallinks__svg{ width: 16px !important; height: 16px !important; }
-}
-
-/* Просторный десктоп ≥1201px: лупа/корзина крупнее для заметности.
-   Ширину контейнера Tilda держит жёстко, поэтому увеличиваем ВИЗУАЛЬНО через
-   transform (layout не трогает — ни обрезки, ни сдвигов). */
-@media screen and (min-width: 1201px){
-  #rec2328046723 .t-menuwidgeticons__img{ transform: scale(1.25); transform-origin: center; }
 }
 
 
