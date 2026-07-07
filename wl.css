@@ -497,35 +497,34 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
 /* =====================================================================
    ШАПКА — десктоп-меню (блок #rec2328046723, Tilda t1272)
 
-   ПРОБЛЕМА: полное меню (5 пунктов + широкий центр-логотип + 3 соц-иконки +
-   поиск/корзина ≈ 1400+px) на частых десктоп-ширинах (1366/1440) сваливалось
-   на 2 строки — иконки уезжали «на второй уровень». Плюс в узкой полосе меню
-   обрезалось, а поиск/корзина схлопывались из-за flex-сжатия.
-
-   ФИКС:
-   • на ВСЕХ десктоп-ширинах держим ОДНУ строку (flex-wrap:nowrap);
-   • соц-иконки (telegram/phone/whatsapp) в шапке скрываем — они есть в футере
-     и в мобильном меню, а в шапке делали её слишком широкой (это и была главная
-     причина переноса на 2-ю строку на 1366/1440);
-   • поиск/корзина не сжимаем (flex-shrink:0), иначе схлопывались до ~8px;
-   • на узких 961–1200 мягко ужимаем пункты/логотип, чтобы всё влезло;
-   • на просторных ≥1201 чуть увеличиваем лупу/корзину для заметности.
+   Меню держим в ОДНУ строку на всех десктоп-ширинах (flex-wrap:nowrap),
+   иконки не сжимаем. Мессенджеры (telegram/phone/whatsapp) занимают место и
+   на узких ширинах роняли меню на 2-ю строку, поэтому:
+   • 961–1099 — мессенджеры прячем (совсем не помещаются), меню сильно ужато;
+   • 1100–1459 — мессенджеры видны (мелкими), меню ужато (лого 18, шрифт 11);
+   • ≥1460 — полный размер меню (лого 28) + мессенджеры/иконки штатного размера.
    ≤960px — родной бургер Tilda (не трогаем).
 ===================================================================== */
 @media screen and (min-width: 961px){
   #rec2328046723 .t-menu-base__maincontainer{ flex-wrap: nowrap !important; }
   #rec2328046723 .t-menu-base__list{ flex-wrap: nowrap !important; }
-  /* соц-иконки в шапке скрыты на десктопе (дублируются в футере / мобильном меню) */
-  #rec2328046723 .t-menu-base__rightwrapper .t-sociallinks__item{ display: none !important; }
-  /* поиск/корзина не сжимаются в тесной строке (иначе схлопывались до ~8px) */
+  /* поиск/корзина/мессенджеры не сжимаются в тесной строке (иначе схлопывались) */
   #rec2328046723 .t-menu-base__rightwrapper,
   #rec2328046723 .t-menuwidgeticons__wrapper,
   #rec2328046723 .t-menuwidgeticons__icon,
-  #rec2328046723 .t-menuwidgeticons__link{ flex-shrink: 0 !important; }
+  #rec2328046723 .t-menuwidgeticons__link,
+  #rec2328046723 .t-sociallinks__item{ flex-shrink: 0 !important; }
 }
 
-/* Узкий десктоп 961–1200px: мягко ужимаем, чтобы меню влезло в одну строку. */
-@media screen and (min-width: 961px) and (max-width: 1200px){
+/* Узкие 961–1099px: мессенджеры не помещаются рядом с полным меню — прячем. */
+@media screen and (min-width: 961px) and (max-width: 1099px){
+  #rec2328046723 .t-menu-base__rightwrapper .t-sociallinks__item{ display: none !important; }
+}
+
+/* Ужатие меню 961–1459px: чтобы всё (пункты + логотип + мессенджеры + поиск/
+   корзина) влезло в одну строку без обрезки. Логотип 28→18, пункты 12→11,
+   мессенджеры мельче (16px). ≥1460 — штатный размер. */
+@media screen and (min-width: 961px) and (max-width: 1459px){
   #rec2328046723 .t-menu-base__maincontainer{
     column-gap: 6px !important; padding-left: 8px !important; padding-right: 8px !important;
   }
@@ -533,19 +532,7 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
   #rec2328046723 .t-menu__link-item{ font-size: 11px !important; letter-spacing: 0 !important; }
   #rec2328046723 .t-menu-base__textlogo{ font-size: 18px !important; }
   #rec2328046723 .t-menuwidgeticons__img{ width: 18px !important; height: 18px !important; }
-}
-
-/* Средний десктоп 1201–1439px (частые ноутбуки 1366/1440): полный размер меню
-   (лого 28, шрифт 12) сюда НЕ влезает и обрезался — мягко ужимаем логотип 28→22
-   и держим шрифт 12. Полный размер включается только с ≥1440, где он помещается. */
-@media screen and (min-width: 1201px) and (max-width: 1439px){
-  #rec2328046723 .t-menu-base__maincontainer{
-    column-gap: 10px !important; padding-left: 10px !important; padding-right: 10px !important;
-  }
-  #rec2328046723 .t-menu-base__list{ column-gap: 10px !important; }
-  #rec2328046723 .t-menu__link-item{ font-size: 12px !important; letter-spacing: 0 !important; }
-  #rec2328046723 .t-menu-base__textlogo{ font-size: 22px !important; }
-  #rec2328046723 .t-menuwidgeticons__img{ width: 18px !important; height: 18px !important; }
+  #rec2328046723 .t-sociallinks__svg{ width: 16px !important; height: 16px !important; }
 }
 
 /* Просторный десктоп ≥1201px: лупа/корзина крупнее для заметности.
