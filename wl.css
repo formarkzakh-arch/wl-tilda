@@ -525,30 +525,45 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
   #rec2328046723 .t-menu-base__rightwrapper .t-sociallinks__item{
     display: none !important;
   }
+  /* ВАЖНО: из-за flex-wrap:nowrap выше flex ужимал контейнер виджет-иконок
+     (поиск/корзина) — у него нет flex-shrink:0, а иконка width:100% → на тесных
+     ширинах (1100–1359) иконки схлопывались до ~8px. Запрещаем им сжиматься и
+     фиксируем нормальный размер. */
+  #rec2328046723 .t-menu-base__rightwrapper,
+  #rec2328046723 .t-menuwidgeticons__wrapper,
+  #rec2328046723 .t-menuwidgeticons__icon,
+  #rec2328046723 .t-menuwidgeticons__link{
+    flex-shrink: 0 !important;
+  }
+  #rec2328046723 .t-menuwidgeticons__img{
+    flex-shrink: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
+  }
 }
 
-/* --- Узкий десктоп 961–1100px: меню НЕ влезало даже без соц-иконок и уезжало
-   за край (пункты + широкий центр-логотип + поиск/корзина ≈ 1081px). Родной
-   бургер Tilda включается только ≤960 и его вертикальную раскладку выше порога
-   поднять нельзя (вся мобильная вёрстка жёстко гейтится @media ≤960). Поэтому
-   в этой узкой полосе мягко ужимаем: пункты 12→11px, зазоры плотнее, логотип
-   28→22px — меню помещается в одну строку без обрезки. На 1101px+ уже влезает
-   полный размер (проверено), поэтому диапазон заканчивается на 1100. */
-@media screen and (min-width: 961px) and (max-width: 1100px){
+/* --- Узкий десктоп 961–1200px: меню НЕ влезало даже без соц-иконок и уезжало
+   за край (пункты + широкий центр-логотип + поиск/корзина). Родной бургер Tilda
+   включается только ≤960 и его вертикальную раскладку выше порога поднять нельзя
+   (вся мобильная вёрстка жёстко гейтится @media ≤960). Поэтому в этой полосе
+   мягко ужимаем: пункты 12→11px, зазоры плотнее, логотип 28→18px — меню в одну
+   строку без обрезки И с нормальными (не схлопнутыми) иконками. На 1201px+
+   влезает полный размер (проверено), поэтому диапазон заканчивается на 1200. */
+@media screen and (min-width: 961px) and (max-width: 1200px){
   #rec2328046723 .t-menu-base__maincontainer{
-    column-gap: 10px !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
+    column-gap: 6px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
   }
   #rec2328046723 .t-menu-base__list{
-    column-gap: 8px !important;
+    column-gap: 6px !important;
   }
   #rec2328046723 .t-menu__link-item{
     font-size: 11px !important;
     letter-spacing: 0 !important;
   }
   #rec2328046723 .t-menu-base__textlogo{
-    font-size: 22px !important;
+    font-size: 18px !important;
   }
 }
 
