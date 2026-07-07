@@ -535,6 +535,19 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
   #rec2328046723 .t-menuwidgeticons__img{ width: 18px !important; height: 18px !important; }
 }
 
+/* Средний десктоп 1201–1439px (частые ноутбуки 1366/1440): полный размер меню
+   (лого 28, шрифт 12) сюда НЕ влезает и обрезался — мягко ужимаем логотип 28→22
+   и держим шрифт 12. Полный размер включается только с ≥1440, где он помещается. */
+@media screen and (min-width: 1201px) and (max-width: 1439px){
+  #rec2328046723 .t-menu-base__maincontainer{
+    column-gap: 10px !important; padding-left: 10px !important; padding-right: 10px !important;
+  }
+  #rec2328046723 .t-menu-base__list{ column-gap: 10px !important; }
+  #rec2328046723 .t-menu__link-item{ font-size: 12px !important; letter-spacing: 0 !important; }
+  #rec2328046723 .t-menu-base__textlogo{ font-size: 22px !important; }
+  #rec2328046723 .t-menuwidgeticons__img{ width: 18px !important; height: 18px !important; }
+}
+
 /* Просторный десктоп ≥1201px: лупа/корзина крупнее для заметности.
    Ширину контейнера Tilda держит жёстко, поэтому увеличиваем ВИЗУАЛЬНО через
    transform (layout не трогает — ни обрезки, ни сдвигов). */
