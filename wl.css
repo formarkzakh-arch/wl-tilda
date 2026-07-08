@@ -508,18 +508,22 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
 @media screen and (min-width: 961px){
   #rec2328046723 .t-menu-base__maincontainer{ flex-wrap: nowrap !important; }
   #rec2328046723 .t-menu-base__list{ flex-wrap: nowrap !important; }
-  /* Меню враспор по всей ширине. Родная раскладка растягивала левый список
-     (flex-basis 558px) и прижимала пункты к логотипу — справа от «О НАС / СЕРТИФИКАТ»
-     до иконок зиял ~240px провал (шапка казалась полупустой и «прижатой влево»).
-     Решение: списки размером по контенту (flex:0 0 auto) + space-between на
-     контейнере → левые пункты, логотип, правые пункты и иконки распределяются
-     РАВНЫМИ зазорами, шапка заполнена по всей ширине. margin:0 на rightwrapper
-     нейтрализует возможный margin-left:auto Tilda (иначе он съел бы весь зазор
-     и вернул провал). Проверено 965–1920px: одна строка, зазоры равны. */
-  #rec2328046723 .t-menu-base__maincontainer{ justify-content: space-between !important; }
+  /* Меню враспор по всей ширине РАВНЫМИ зазорами (включая логотип).
+     Родная раскладка растягивала левый список (flex-basis 558px) и прижимала
+     пункты к логотипу — справа зиял ~240px провал («прижато влево»). Простой
+     space-between по блокам-спискам давал равные зазоры МЕЖДУ блоками, но логотип
+     «отрывался» (внутри списков пункты близко, а до логотипа — большой зазор).
+     Решение: списки `display:contents` → их пункты становятся прямыми flex-детьми
+     .maincontainer, и space-between распределяет ВСЕ пункты + логотип + иконки
+     ОДИНАКОВЫМИ зазорами (на 1440 ≈73–74px, логотип ровно посреди своего зазора).
+     column-gap задаёт минимум на тесных ширинах; margin:0/flex:0 0 auto на
+     rightwrapper держат иконки одним блоком и гасят margin-left:auto Tilda.
+     li не трогаем (display:block) → выпадающие подменю позиционируются штатно.
+     Проверено chrome-devtools 965–1920px: одна строка, зазоры равны, подменю ОК. */
+  #rec2328046723 .t-menu-base__maincontainer{ justify-content: space-between !important; column-gap: 8px !important; }
   #rec2328046723 .t-menu-base__list_leftside,
-  #rec2328046723 .t-menu-base__list_rightside{ flex: 0 0 auto !important; justify-content: flex-start !important; }
-  #rec2328046723 .t-menu-base__rightwrapper{ margin: 0 !important; }
+  #rec2328046723 .t-menu-base__list_rightside{ display: contents !important; }
+  #rec2328046723 .t-menu-base__rightwrapper{ margin: 0 !important; flex: 0 0 auto !important; }
   /* поиск/корзина/мессенджеры не сжимаются в тесной строке (иначе схлопывались) */
   #rec2328046723 .t-menu-base__rightwrapper,
   #rec2328046723 .t-menuwidgeticons__wrapper,
