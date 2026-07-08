@@ -508,6 +508,18 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
 @media screen and (min-width: 961px){
   #rec2328046723 .t-menu-base__maincontainer{ flex-wrap: nowrap !important; }
   #rec2328046723 .t-menu-base__list{ flex-wrap: nowrap !important; }
+  /* Меню враспор по всей ширине. Родная раскладка растягивала левый список
+     (flex-basis 558px) и прижимала пункты к логотипу — справа от «О НАС / СЕРТИФИКАТ»
+     до иконок зиял ~240px провал (шапка казалась полупустой и «прижатой влево»).
+     Решение: списки размером по контенту (flex:0 0 auto) + space-between на
+     контейнере → левые пункты, логотип, правые пункты и иконки распределяются
+     РАВНЫМИ зазорами, шапка заполнена по всей ширине. margin:0 на rightwrapper
+     нейтрализует возможный margin-left:auto Tilda (иначе он съел бы весь зазор
+     и вернул провал). Проверено 965–1920px: одна строка, зазоры равны. */
+  #rec2328046723 .t-menu-base__maincontainer{ justify-content: space-between !important; }
+  #rec2328046723 .t-menu-base__list_leftside,
+  #rec2328046723 .t-menu-base__list_rightside{ flex: 0 0 auto !important; justify-content: flex-start !important; }
+  #rec2328046723 .t-menu-base__rightwrapper{ margin: 0 !important; }
   /* поиск/корзина/мессенджеры не сжимаются в тесной строке (иначе схлопывались) */
   #rec2328046723 .t-menu-base__rightwrapper,
   #rec2328046723 .t-menuwidgeticons__wrapper,
