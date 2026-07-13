@@ -547,3 +547,105 @@
   if (document.readyState !== 'loading') start();
   else document.addEventListener('DOMContentLoaded', start);
 })();
+
+/* ===================================================================
+   СТРАНИЦА СТАТЬИ (/blog/<uid>-...) — фолбэк тела статьи.
+
+   Блок «страница записи» нового CMS Tilda выводит из статьи ТОЛЬКО
+   заголовок: в его шаблоне остались демо-поля ({{textarea}}, {{task}},
+   {{select}}...), а реального поля статьи «text» там нет → страница
+   пустая. Сами тексты в ленте целы (feeds.tildaapi.com).
+
+   Пока блок не настроен в редакторе, берём статью из штатного API
+   ленты по её uid и дорисовываем под заголовком: обложка → дата → текст.
+
+   Самоотключение: если в статье появилось больше одной «молекулы»
+   (значит, Tilda начала выводить тело сама) — не делаем ничего.
+   =================================================================== */
+(function(){
+  var API = 'https://feeds.tildaapi.com/api/v2/getpost/';
+
+  function articleNode(){ return document.querySelector('.js-cms-snippet article.t-cms__page'); }
+
+  function needsBody(art){
+    if(!art || art.querySelector('.wl-post-body')) return false;
+    /* штатное тело статьи = больше одной молекулы (заголовок + остальное) */
+    return art.querySelectorAll('[data-fe-post-entity="molecule"]').length <= 1;
+  }
+
+  function ruDate(iso){
+    var d = new Date(iso);
+    if(isNaN(d)) return '';
+    function p(n){ return (n < 10 ? '0' : '') + n; }
+    return p(d.getDate()) + '.' + p(d.getMonth() + 1) + '.' + d.getFullYear();
+  }
+
+  function render(art, f){
+    var box = document.createElement('div');
+    box.className = 'wl-post-body';
+
+    var media = f['preview-media'];
+    if(media && media.type === 'image' && media.source && media.source.url){
+      var fig = document.createElement('div');
+      fig.className = 'wl-post-cover';
+      var img = document.createElement('img');
+      img.src = media.source.url;
+      img.alt = media.source.alt || f.title || '';
+      fig.appendChild(img);
+      box.appendChild(fig);
+    }
+    if(f.date){
+      var dt = ruDate(f.date);
+      if(dt){
+        var d = document.createElement('div');
+        d.className = 'wl-post-date';
+        d.textContent = dt;
+        box.appendChild(d);
+      }
+    }
+    if(f.text){
+      var txt = document.createElement('div');
+      txt.className = 'wl-post-text';
+      txt.innerHTML = f.text;
+      box.appendChild(txt);
+    }
+    if(box.children.length) art.appendChild(box);
+  }
+
+  var done = false;
+  function fill(){
+    if(done) return;
+    var art = articleNode();
+    if(!needsBody(art)) return;
+
+    var holder = document.querySelector('.js-cms-data-holder[data-postuid]');
+    if(!holder) return;
+    var feeduid = holder.getAttribute('data-feedpart');
+    var postuid = holder.getAttribute('data-postuid');
+    if(!feeduid || !postuid) return;
+
+    done = true; /* один запрос на загрузку страницы */
+    fetch(API + '?feeduid=' + encodeURIComponent(feeduid) + '&postuid=' + encodeURIComponent(postuid))
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        var post = j && j.result && j.result.post;
+        var art2 = articleNode();
+        if(!post || !post.fields || !needsBody(art2)) return;
+        render(art2, post.fields);
+      })
+      .catch(function(){ done = false; });
+  }
+
+  function boot(){
+    if(!/^\/blog\//.test(location.pathname)) return;
+    fill();
+    /* Tilda дорисовывает сниппет асинхронно — ждём его появления */
+    var tries = 0;
+    var t = setInterval(function(){
+      fill();
+      if(done || ++tries > 30) clearInterval(t); /* ~9 c */
+    }, 300);
+  }
+  if (document.readyState !== 'loading') boot();
+  else document.addEventListener('DOMContentLoaded', boot);
+})();

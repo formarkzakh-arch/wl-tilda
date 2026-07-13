@@ -596,3 +596,60 @@ body.wl-mobile-prod .wl-wishlist-btn.is-active svg path{ fill:#cc0000; stroke:#c
   background-color: #f4f4f4 !important;
 }
 */
+
+/* =====================================================================
+   СТРАНИЦА СТАТЬИ (/blog/...) — оформление тела статьи.
+
+   Тело вставляет JS-фолбэк (см. «Код из head»): блок «страница записи»
+   нового CMS Tilda выводит только заголовок. Классы .t-redactor__*
+   приходят из самого текста статьи — их тоже приводим к виду сайта.
+   ===================================================================== */
+
+/* заголовок статьи не должен уезжать под фиксированную шапку */
+.t-cms__page-container_snippet{ padding-top: 120px; }
+
+.wl-post-body{
+  font-family: var(--wl-font);
+  color: var(--wl-ink);
+  font-size: 17px;
+  line-height: 1.65;
+  margin-top: 24px;
+}
+.wl-post-cover{ margin: 0 0 24px; }
+.wl-post-cover img{ display: block; width: 100%; height: auto; }
+
+.wl-post-date{
+  font-size: 12px; letter-spacing: var(--wl-tracking);
+  text-transform: uppercase; color: var(--wl-gray);
+  margin-bottom: 18px;
+}
+
+.wl-post-text p,
+.wl-post-text .t-redactor__text{ margin: 0 0 18px; }
+.wl-post-text h2, .wl-post-text h3, .wl-post-text h4,
+.wl-post-text .t-redactor__h2,
+.wl-post-text .t-redactor__h3,
+.wl-post-text .t-redactor__h4{
+  font-family: var(--wl-font);
+  font-weight: 500;
+  color: var(--wl-black);
+  letter-spacing: var(--wl-tracking);
+  margin: 34px 0 14px;
+  line-height: 1.3;
+}
+.wl-post-text .t-redactor__h2{ font-size: 26px; }
+.wl-post-text .t-redactor__h3{ font-size: 22px; }
+.wl-post-text .t-redactor__h4{ font-size: 19px; }
+.wl-post-text figure{ margin: 24px 0; }
+.wl-post-text img{ display: block; width: 100%; height: auto; }
+.wl-post-text a{ color: var(--wl-ink); text-decoration: underline; }
+.wl-post-text ul, .wl-post-text ol{ margin: 0 0 18px; padding-left: 22px; }
+.wl-post-text li{ margin-bottom: 8px; }
+
+@media screen and (max-width: 640px){
+  .t-cms__page-container_snippet{ padding-top: 86px; }
+  .wl-post-body{ font-size: 16px; }
+  .wl-post-text .t-redactor__h2{ font-size: 22px; }
+  .wl-post-text .t-redactor__h3{ font-size: 20px; }
+  .wl-post-text .t-redactor__h4{ font-size: 18px; }
+}
